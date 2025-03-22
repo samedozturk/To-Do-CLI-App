@@ -21,10 +21,12 @@ func (j *JsonStorage) GetTask() error {
 		if err != nil {
 			return err
 		}
-	}
-	err = json.Unmarshal(data, &j.Tasks)
-	if err != nil {
-		return err
+		j.Tasks = make([]todo.Task, 0)
+	} else {
+		err = json.Unmarshal(data, &j.Tasks)
+		if err != nil {
+			return err
+		}
 	}
 	fmt.Println("Tasks")
 	fmt.Println(j.Tasks)
@@ -106,7 +108,7 @@ func (j *JsonStorage) TaskMarkDone(id int) error {
 func (j *JsonStorage) TaskList(time time.Time) error {
 	var tasks []todo.Task
 	for _, v := range j.Tasks {
-		if v.Date.Date() == time.Date() {
+		if v.Date.Format("2006-01-02") == time.Format("2006-01-02") {
 			tasks = append(tasks, v)
 		}
 	}
