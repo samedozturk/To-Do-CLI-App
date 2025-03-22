@@ -33,26 +33,16 @@ func (j *JsonStorage) GetTask() error {
 	return nil
 }
 func (j *JsonStorage) SetTask() error {
-	d, err := os.ReadFile(j.FilePath)
-	var data []todo.Task
-	if err != nil {
+	if dataf, err := json.Marshal(j.Tasks); err != nil {
 		return err
+	} else {
+		if err = os.WriteFile(j.FilePath, dataf, 0644); err != nil {
+			return err
+		} else {
+			j.Tasks = make([]todo.Task, 0)
+			return nil
+		}
 	}
-	err = json.Unmarshal(d, &data)
-	if err != nil {
-		return err
-	}
-	data = append(data, j.Tasks...)
-	d, err = json.Marshal(data)
-	if err != nil {
-		return err
-	}
-	err = os.WriteFile(j.FilePath, d, 0644)
-	if err != nil {
-		return err
-	}
-	j.Tasks = []todo.Task{}
-	return nil
 }
 func (j *JsonStorage) TaskAdd(task todo.Task) error {
 	for _, v := range j.Tasks {
@@ -79,7 +69,7 @@ func (j *JsonStorage) TaskRemove(id int) error {
 }
 func (j *JsonStorage) TaskChange(task todo.Task, id int) error {
 	var index int = -1
-	for i, _ := range j.Tasks {
+	for i := range j.Tasks {
 		if i == id {
 			index = i
 			break
@@ -112,7 +102,7 @@ func (j *JsonStorage) TaskList(time time.Time) error {
 			tasks = append(tasks, v)
 		}
 	}
-	if tasks == nil {
+	if len(tasks) == 0 {
 		return errors.New("bu tarihte task yok")
 	}
 	for _, v := range tasks {
