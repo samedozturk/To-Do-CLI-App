@@ -28,8 +28,6 @@ func (j *JsonStorage) GetTask() error {
 			return err
 		}
 	}
-	fmt.Println("Tasks")
-	fmt.Println(j.Tasks)
 	return nil
 }
 func (j *JsonStorage) SetTask() error {
@@ -105,6 +103,7 @@ func (j *JsonStorage) TaskList(time time.Time) error {
 	if len(tasks) == 0 {
 		return errors.New("bu tarihte task yok")
 	}
+	fmt.Println("Filetred Tasks")
 	for _, v := range tasks {
 		fmt.Println(v)
 	}

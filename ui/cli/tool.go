@@ -1,22 +1,25 @@
 package cli
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/samedozturk/To-Do-CLI-App/internal/storage"
 	"github.com/samedozturk/To-Do-CLI-App/internal/todo"
+	"os"
+	"strings"
 	"time"
 )
 
 func ShowData(db *storage.JsonStorage) {
 	fmt.Println("==== ToDo APP ====")
 	for i, v := range db.Tasks {
-		fmt.Println("Task ", i)
+		fmt.Println("Task ", i+1)
 		fmt.Println("----------------")
 		fmt.Println("ID: ", v.ID)
 		fmt.Println("Title: ", v.Title)
 		fmt.Println("Content: ", v.Content)
 		fmt.Println("Status: ", v.Done)
-		fmt.Println("Date: ", v.Date.Format("2006-01-02"))
+		fmt.Println("Date: ", v.Date.Format("2006-01-02 15:04"))
 		fmt.Println("----------------")
 	}
 }
@@ -27,8 +30,9 @@ func ShowPanel() {
 	fmt.Println("2 - Change a Task")
 	fmt.Println("3 - Filter The Tasks")
 	fmt.Println("4 - Mark Done")
+	fmt.Println("5 - Exit")
 }
-func AddTask(db *storage.JsonStorage) {
+func CreateTask(db *storage.JsonStorage) todo.Task {
 	var task todo.Task = todo.Task{}
 	var ListID []int
 	for _, v := range db.Tasks {
@@ -39,21 +43,39 @@ func AddTask(db *storage.JsonStorage) {
 	task.Done = false
 	var title, content string
 	fmt.Print("Title giriniz: ")
-	if _, err := fmt.Scanf("%s", &title); err != nil {
+	reader := bufio.NewReader(os.Stdin)
+	title, err := reader.ReadString('\n')
+	if err != nil {
 		fmt.Println("hata: ", err)
 	}
 	fmt.Print("Content giriniz: ")
-	if _, err := fmt.Scanf("%s", &content); err != nil {
-		fmt.Println("hata: ", err)
-	}
-	task.Title = title
-	task.Content = content
-	err := db.TaskAdd(task)
+	content, err = reader.ReadString('\n')
 	if err != nil {
 		fmt.Println("hata: ", err)
-	} else {
-		fmt.Println("Task eklendi")
-		fmt.Println(db.Tasks)
 	}
-	// title content alma kısmında metin tam olarak doğru alınmıyor
+
+	task.Title = strings.TrimSpace(title)
+	task.Content = strings.TrimSpace(content)
+	return task
 }
+func TakeDate() time.Time {
+	fmt.Println("Please enter a date (YY-MM-DD)(Please enter like this way)")
+	reader := bufio.NewReader(os.Stdin)
+	respond, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("error: ", err)
+	}
+	respond = strings.TrimSpace(respond)
+	if t, err := time.Parse("2006-01-02", respond); err != nil {
+		fmt.Println("error: ", err)
+		return time.Time{}
+	} else {
+		return t
+	}
+}
+func GenerateID() {
+
+}
+
+// id çakışması yaşıyoruz
+// bu sorunu çöz ve unit testyaz menu.go için
