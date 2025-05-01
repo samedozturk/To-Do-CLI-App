@@ -5,7 +5,7 @@ import (
 )
 
 type Task struct {
-	ID      int       `json:"id"`
+	ID      uint32    `json:"id"`
 	Title   string    `json:"title"`
 	Content string    `json:"content"`
 	Date    time.Time `json:"date"`

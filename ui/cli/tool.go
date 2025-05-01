@@ -3,6 +3,7 @@ package cli
 import (
 	"bufio"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/samedozturk/To-Do-CLI-App/internal/storage"
 	"github.com/samedozturk/To-Do-CLI-App/internal/todo"
 	"os"
@@ -33,13 +34,10 @@ func ShowPanel() {
 	fmt.Println("5 - Exit")
 }
 func CreateTask(db *storage.JsonStorage) todo.Task {
+	gen := uuid.New()
 	var task todo.Task = todo.Task{}
-	var ListID []int
-	for _, v := range db.Tasks {
-		ListID = append(ListID, v.ID)
-	}
 	task.Date = time.Now()
-	task.ID = len(ListID)
+	task.ID = gen.ID()
 	task.Done = false
 	var title, content string
 	fmt.Print("Title giriniz: ")
@@ -73,9 +71,6 @@ func TakeDate() time.Time {
 		return t
 	}
 }
-func GenerateID() {
 
-}
-
-// id çakışması yaşıyoruz
+// id çakışması yaşıyoruz okeyy
 // bu sorunu çöz ve unit testyaz menu.go için

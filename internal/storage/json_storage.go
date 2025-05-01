@@ -51,46 +51,46 @@ func (j *JsonStorage) TaskAdd(task todo.Task) error {
 	j.Tasks = append(j.Tasks, task)
 	return nil
 }
-func (j *JsonStorage) TaskRemove(id int) error {
-	var index int = -1
-	for i, v := range j.Tasks {
-		if v.ID == id {
-			index = i
+func (j *JsonStorage) TaskRemove(no int) error {
+	var condition bool = false
+	for i := 1; i <= len(j.Tasks); i++ {
+		if i == no {
+			condition = true
 			break
 		}
 	}
-	if index == -1 {
-		return errors.New("task bulunamadi")
+	if !condition {
+		return errors.New("task is not found")
 	}
-	j.Tasks = append(j.Tasks[:index], j.Tasks[index+1:]...)
+	j.Tasks = append(j.Tasks[:no-1], j.Tasks[no:]...)
 	return nil
 }
-func (j *JsonStorage) TaskChange(task todo.Task, id int) error {
-	var index int = -1
-	for i := range j.Tasks {
-		if i == id {
-			index = i
+func (j *JsonStorage) TaskChange(task todo.Task, no int) error {
+	var condition bool = false
+	for i := 1; i <= len(j.Tasks); i++ {
+		if i == no {
+			condition = true
 			break
 		}
 	}
-	if index == -1 {
-		return errors.New("task bulunamadi")
+	if !condition {
+		return errors.New("task is not found")
 	}
-	j.Tasks[index] = task
+	j.Tasks[no-1] = task
 	return nil
 }
-func (j *JsonStorage) TaskMarkDone(id int) error {
-	var index int = -1
-	for i, v := range j.Tasks {
-		if v.ID == id {
-			index = i
+func (j *JsonStorage) TaskMarkDone(no int) error {
+	var condition bool = false
+	for i := 1; i <= len(j.Tasks); i++ {
+		if i == no {
+			condition = true
 			break
 		}
 	}
-	if index == -1 {
-		return errors.New("task bulunamadı")
+	if !condition {
+		return errors.New("task is not found")
 	}
-	j.Tasks[index].Done = true
+	j.Tasks[no-1].Done = true
 	return nil
 }
 func (j *JsonStorage) TaskList(time time.Time) error {
@@ -104,8 +104,15 @@ func (j *JsonStorage) TaskList(time time.Time) error {
 		return errors.New("bu tarihte task yok")
 	}
 	fmt.Println("Filetred Tasks")
-	for _, v := range tasks {
-		fmt.Println(v)
+	for i, v := range tasks {
+		fmt.Println("Task ", i+1)
+		fmt.Println("****************")
+		fmt.Println("ID: ", v.ID)
+		fmt.Println("Title: ", v.Title)
+		fmt.Println("Content: ", v.Content)
+		fmt.Println("Status: ", v.Done)
+		fmt.Println("Date: ", v.Date.Format("2006-01-02 15:04"))
+		fmt.Println("****************")
 	}
 	return nil
 }

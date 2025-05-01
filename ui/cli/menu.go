@@ -40,7 +40,7 @@ func Menu() {
 			if response >= 0 && response < 6 {
 				break
 			}
-			fmt.Println("Try Again, ERROR: ", errors.New("response must be in 0 between 4"))
+			fmt.Println("Try Again, ERROR: ", errors.New("response must be in 0 between 5"))
 		}
 		switch response {
 		case 0:
@@ -52,7 +52,7 @@ func Menu() {
 				fmt.Println("Task eklendi")
 			}
 		case 1:
-			fmt.Println("enter a id number for remove process: ")
+			fmt.Println("enter a task number for remove process: ")
 			for {
 				if res, err = reader.ReadString('\n'); err != nil {
 					fmt.Println("error: ", err)
@@ -67,13 +67,13 @@ func Menu() {
 						fmt.Println("error: ", err)
 						continue
 					} else {
-						fmt.Println("task has been deleted")
+						fmt.Println("task was deleted")
 						break
 					}
 				}
 			}
 		case 2:
-			fmt.Println("enter a id number to Change task")
+			fmt.Println("enter a task number to Change task")
 			for {
 				if res, err = reader.ReadString('\n'); err != nil {
 					fmt.Println("error: ", err)
@@ -99,7 +99,7 @@ func Menu() {
 				fmt.Println("error: ", err)
 			}
 		case 4:
-			fmt.Println("enter a id number to mark done")
+			fmt.Println("enter a task number to mark done")
 			for {
 				if res, err = reader.ReadString('\n'); err != nil {
 					fmt.Println("error: ", err)
@@ -115,7 +115,7 @@ func Menu() {
 						}
 					}
 				}
-				fmt.Println("Task marked done succesfully!")
+				fmt.Println("Task-Marking was done succesfully!")
 				break
 			}
 		case 5:
