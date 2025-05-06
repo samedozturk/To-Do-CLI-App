@@ -7,15 +7,25 @@ import (
 	"github.com/samedozturk/To-Do-CLI-App/internal/storage"
 	"github.com/samedozturk/To-Do-CLI-App/internal/todo"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
 
-func Menu() {
-	var db storage.JsonStorage = storage.JsonStorage{
-		[]todo.Task{},
-		"data/db1",
+var db storage.JsonStorage = storage.JsonStorage{
+	[]todo.Task{},
+	"",
+}
+
+func init() {
+	path, err := filepath.Abs(filepath.Dir(os.Args[0])) //this is for binary not main
+	if err != nil {
+		fmt.Println("data dosya yolu hatası", err)
 	}
+	path = filepath.Join(path, "data.json")
+	db.FilePath = path
+}
+func Menu() {
 	if err := db.GetTask(); err != nil {
 		fmt.Println(err)
 	}
@@ -44,7 +54,7 @@ func Menu() {
 		}
 		switch response {
 		case 0:
-			task := CreateTask(&db)
+			task := CreateTask()
 			err := db.TaskAdd(task)
 			if err != nil {
 				fmt.Println("hata: ", err)
@@ -84,7 +94,7 @@ func Menu() {
 						continue
 					} else {
 						fmt.Println("new task: ")
-						if err = db.TaskChange(CreateTask(&db), id); err != nil {
+						if err = db.TaskChange(CreateTask(), id); err != nil {
 							fmt.Println("error: ", err)
 							continue
 						}

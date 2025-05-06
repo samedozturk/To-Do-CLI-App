@@ -33,7 +33,7 @@ func ShowPanel() {
 	fmt.Println("4 - Mark Done")
 	fmt.Println("5 - Exit")
 }
-func CreateTask(db *storage.JsonStorage) todo.Task {
+func CreateTask() todo.Task {
 	gen := uuid.New()
 	var task todo.Task = todo.Task{}
 	task.Date = time.Now()
@@ -71,6 +71,3 @@ func TakeDate() time.Time {
 		return t
 	}
 }
-
-// id çakışması yaşıyoruz okeyy
-// bu sorunu çöz ve unit testyaz menu.go için
