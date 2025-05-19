@@ -1,2 +1,3 @@
 /bin/
-/data.jsond
+/data.json
+/.env

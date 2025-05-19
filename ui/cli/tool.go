@@ -4,14 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/samedozturk/To-Do-CLI-App/internal/storage"
+	"github.com/samedozturk/To-Do-CLI-App/internal/storage/local"
 	"github.com/samedozturk/To-Do-CLI-App/internal/todo"
 	"os"
 	"strings"
 	"time"
 )
 
-func ShowData(db *storage.JsonStorage) {
+func ShowData(db *local.JsonStorage) {
 	fmt.Println("==== ToDo APP ====")
 	for i, v := range db.Tasks {
 		fmt.Println("Task ", i+1)

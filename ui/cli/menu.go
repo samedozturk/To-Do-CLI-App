@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/samedozturk/To-Do-CLI-App/internal/storage"
+	"github.com/samedozturk/To-Do-CLI-App/internal/storage/local"
 	"github.com/samedozturk/To-Do-CLI-App/internal/todo"
 	"os"
 	"path/filepath"
@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-var db storage.JsonStorage = storage.JsonStorage{
+var db local.JsonStorage = local.JsonStorage{
 	[]todo.Task{},
 	"",
 }
